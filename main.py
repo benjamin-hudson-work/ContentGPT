@@ -5,6 +5,11 @@ import openai
 import os
 import pandas as pd
 
+with open('OpenAI API Key.txt') as f: #Temp
+    contents = f.read()
+openai.api_key = contents  #st.secrets[openAiKey] #only works on deployment
+messages = [ ]#{"role": "system", "content": "You are a intelligent assistant."} ]
+
 st.title("ContentGPT")
 source = st.sidebar.markdown("[![Click!](./app/static/git.png)](https://github.com/benjamin-hudson-work/ContentGPT)")
 
@@ -17,6 +22,15 @@ goal = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All 
 keywords_input = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 start = st.button("Start!")
-if start:
-    st.write("Done! (not)") #Execute code here?
-    [url, goal, keywords_input]
+if start: #Execute code here
+    messages.append(
+        {"role": "user", "content": "Hello, ChatGPT!"},
+    )
+    chat = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo", messages=messages
+    )
+    reply = chat.choices[0].message.content
+    messages.append({"role": "assistant", "content": reply})
+    messages
+
+#phone_number = st.slider("Input phone number for more",max_value=9999999999) 
