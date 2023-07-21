@@ -11,8 +11,8 @@ from streamlit_chat import message
 MODEL = "gpt-3.5-turbo"
 EMODEL = "text-embedding-ada-002"
 
-openai.api_key = st.secrets[OPENAI_KEY] 
-pApiKey = st.secrets[PINECONE_KEY] 
+openai.api_key = st.secrets['OPENAI_KEY'] 
+pApiKey = st.secrets['PINECONE_KEY'] 
 
 res = openai.Embedding.create(
     input=[
