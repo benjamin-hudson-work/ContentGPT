@@ -88,4 +88,4 @@ if st.session_state['generated']:
 
 repeat = st.button("Repeat")
 if repeat:
-    ask_AI(st.session_state["generated"][-1])
+    ask_AI(st.session_state["past"][-1])
