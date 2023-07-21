@@ -37,6 +37,28 @@ index = pinecone.Index('conversion')
 #Get the AI into character
 messages = [{"role": "system", "content": "You are an intelligent assistant. Your focus is on conversion marketing. Answer the question as truthfully as possible."} ]
 
+#Store conversation through refreshes
+if 'generated' not in st.session_state:
+    st.session_state['generated'] = []
+
+if 'past' not in st.session_state:
+    st.session_state['past'] = []
+
+#Function that asks ChatGPT question based on user input
+def ask_AI(question):
+    messages.append( 
+        {"role": "user", "content": question},
+    )
+    chat = openai.ChatCompletion.create(
+        model=MODEL, messages=messages
+    )
+    reply = chat.choices[0].message.content
+    messages.append({"role": "assistant", "content": reply})
+
+    #Store output
+    st.session_state.generated.append(reply)
+    st.session_state.past.append(question)
+
 st.title("ContentGPT")
 #Sidebar content: link to Github
 st.sidebar.markdown("[![Click!](./app/static/git.png)](https://github.com/benjamin-hudson-work/ContentGPT)")
@@ -51,33 +73,19 @@ url = st.text_input("Item page url")
 goal = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
 keywords_input = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
-#Store conversation through refreshes
-if 'generated' not in st.session_state:
-    st.session_state['generated'] = []
-
-if 'past' not in st.session_state:
-    st.session_state['past'] = []
-
-#Press button to ask ChatGPT question based on user input
+#Press button to send input
 start = st.button("Start!")
 if start: #Execute code here (TODO: Define function)
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
-        question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
-        messages.append( 
-            {"role": "user", "content": question},
-        )
-        chat = openai.ChatCompletion.create(
-            model=MODEL, messages=messages
-        )
-        reply = chat.choices[0].message.content
-        messages.append({"role": "assistant", "content": reply})
-
-        #Store output
-        st.session_state.generated.append(reply)
-        st.session_state.past.append(question)
+        compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+        ask_AI(compiled_question)
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
         message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user')
         message(st.session_state["generated"][i],seed=50 , key=str(i))
+
+repeat = st.button("Repeat")
+if repeat:
+    ask_AI(st.session_state["generated"][-1])
