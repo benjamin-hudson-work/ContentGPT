@@ -79,5 +79,5 @@ if start: #Execute code here (TODO: Define function)
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message(st.session_state["generated"][i],seed=50 , key=str(i))
         message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user')
+        message(st.session_state["generated"][i],seed=50 , key=str(i))
