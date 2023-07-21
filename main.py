@@ -74,8 +74,8 @@ if start: #Execute code here (TODO: Define function)
         messages.append({"role": "assistant", "content": reply})
 
         #Store output
-        st.session_state.past.append(question)
         st.session_state.generated.append(reply)
+        st.session_state.past.append(question)
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
