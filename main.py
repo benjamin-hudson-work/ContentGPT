@@ -59,6 +59,17 @@ def ask_AI(question):
     st.session_state.generated.append(reply)
     st.session_state.past.append(question)
 
+#Start of UI
+repeat = st.button("Repeat")
+if repeat:
+    ask_AI(st.session_state["past"][-1])
+
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated'])-1, -1, -1):
+        #st.session_state["generated"][i] #For testing
+        message(st.session_state["generated"][i],seed=50 , key=str(i)) #only works in deployment
+        #message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user') #Display the question asked
+
 st.title("ContentGPT")
 #Sidebar content: link to Github
 st.sidebar.markdown("[![Click!](./app/static/git.png)](https://github.com/benjamin-hudson-work/ContentGPT)")
@@ -78,14 +89,14 @@ start = st.button("Start!")
 if start: #Execute code here (TODO: Define function)
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
-        compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
-        ask_AI(compiled_question)
-
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user')
-        message(st.session_state["generated"][i],seed=50 , key=str(i))
-
-repeat = st.button("Repeat")
-if repeat:
-    ask_AI(st.session_state["past"][-1])
+        if goal == "Optimize Title":
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+            ask_AI(compiled_question)
+        elif goal == "Optimize Features":
+            description = "The Most Trusted Honey Company. With a purity guarantee and award-winning taste, Nature Nate's organic raw and unfiltered honey delivers a promise of the highest quality honey. Through rigorous testing and careful handling, we ensure every bottle of Nature Nate's honey is the highest quality from the inside out: Gluten-free, no additives, no preservatives, never pasteurized, pollens intact, crafted for exceptional taste and no sticky bottles. You can confidently add this organic natural sugar substitute to barbecue, pecan pie, sweet tea and honey lime margaritas for starters. Our ultimate goal is to leave the world a little better than we found it by fostering happy hives and happy lives, giving of our time and resources from bees to beyond the bottle in communities of need." #TODO: Webscraping
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
+            ask_AI(compiled_question)
+        elif goal == "Optimize All Content":
+            print("Coming soon")
+        else:
+            print("error")
