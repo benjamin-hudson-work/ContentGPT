@@ -121,11 +121,11 @@ if start: #Execute code here (TODO: Define function)
         path = urlparse(url).path #Shorten link to ease AI's understanding
         if goal == "Optimize Title":
             name = scrape(url, "title")
-            compiled_question = "Tell me what the name of this product is: " + name + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+            compiled_question = "Tell me what the name of this product is: " + name.get(0) + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
             ask_AI(compiled_question)
         elif goal == "Optimize Features":
             description = scrape(url, "description")
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description.get(0)
             ask_AI(compiled_question)
         elif goal == "Optimize All Content":
             print("Coming soon")
