@@ -120,7 +120,8 @@ if start: #Execute code here (TODO: Define function)
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
         if goal == "Optimize Title":
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+            name = scrape(url, "title")
+            compiled_question = "Tell me what the name of this product is: " + name + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
             ask_AI(compiled_question)
         elif goal == "Optimize Features":
             description = scrape(url, "description")
