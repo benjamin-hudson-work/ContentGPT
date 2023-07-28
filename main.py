@@ -59,6 +59,7 @@ def scrape(url, target): #Inputs are url of Walmart store page and the type of d
         except:
             obj["name"]=None
     l.append(obj)
+    print(obj)
     return obj
 
 #Ai Code Block#
@@ -118,10 +119,11 @@ keywords_input = st.text_input("Which keywords would you like ChatGPT to emphasi
 start = st.button("Start!")
 if start: #Execute code here (TODO: Define function)
     if url:
+        print("start")
         path = urlparse(url).path #Shorten link to ease AI's understanding
         if goal == "Optimize Title":
             name = scrape(url, "title")
-            compiled_question = "Tell me what the name of this product is: " + name.get(0) + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+            compiled_question = "Tell me what the name of this product is: " + name.get(1) + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
             ask_AI(compiled_question)
         elif goal == "Optimize Features":
             description = scrape(url, "description")
