@@ -41,7 +41,7 @@ index = pinecone.Index('conversion')
 #Webscraping Block#
 
 def scrape(url, target): #Inputs are url of Walmart store page and the type of data requested.
-    resp = requests.get(url, headers=headers)
+    resp = requests.get(url, headers=headers) #TODO: ScrapeOps
     if("Robot or human" in resp.text):
         return("False")
     soup = BeautifulSoup(resp.text,'html.parser')
@@ -123,14 +123,13 @@ if start: #Execute code here (TODO: Define function)
         path = urlparse(url).path #Shorten link to ease AI's understanding
         if goal == "Optimize Title":
             name = scrape(url, "title")
-            name
-            compiled_question = "Tell me what the name of this product is: " + name.get(0) + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
             ask_AI(compiled_question)
         elif goal == "Optimize Features":
-            description = scrape(url, "description")
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description.get(0)
+            description = "The Most Trusted Honey Company. With a purity guarantee and award-winning taste, Nature Nate's organic raw and unfiltered honey delivers a promise of the highest quality honey. Through rigorous testing and careful handling, we ensure every bottle of Nature Nate's honey is the highest quality from the inside out: Gluten-free, no additives, no preservatives, never pasteurized, pollens intact, crafted for exceptional taste and no sticky bottles. You can confidently add this organic natural sugar substitute to barbecue, pecan pie, sweet tea and honey lime margaritas for starters. Our ultimate goal is to leave the world a little better than we found it by fostering happy hives and happy lives, giving of our time and resources from bees to beyond the bottle in communities of need."#scrape(url, "description")
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
             ask_AI(compiled_question)
         elif goal == "Optimize All Content":
-            print("Coming soon")
+            "Coming soon"
         else:
-            print("error")
+            "error"
