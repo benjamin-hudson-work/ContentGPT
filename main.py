@@ -132,7 +132,10 @@ if start: #Execute code here (TODO: Define function)
             description = scrape(url, "description")
             compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
             ask_AI(compiled_question)
-        elif goal == "Optimize All Content":
-            "Coming soon"
+        elif goal == "Optimize All Content": 
+            name = scrape(url, "title")
+            description = scrape(url, "description")
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion? Then, tell me how you would change this following product description to improve conversion?" + description
+            ask_AI(compiled_question)
         else:
             "error"
