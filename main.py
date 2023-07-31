@@ -49,8 +49,8 @@ def scrapeops_url(url):
 
 def scrape(url, target): #Inputs are url of Walmart store page and the type of data requested.
     resp = requests.get(scrapeops_url(url))#,headers=headers###) 
-    if("Robot or human" in resp.text):
-        return("False")
+    #if("Robot or human" in resp.text):
+    #    return("False")
     soup = BeautifulSoup(resp.text,'html.parser')
     l=[]
     obj={}
@@ -68,7 +68,7 @@ def scrape(url, target): #Inputs are url of Walmart store page and the type of d
         except:
             obj["name"]=None
     l.append(obj)
-    return obj
+    return l[0]
 
 #Ai Code Block#
 
