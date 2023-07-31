@@ -52,23 +52,19 @@ def scrape(url, target): #Inputs are url of Walmart store page and the type of d
     #if("Robot or human" in resp.text):
     #    return("False")
     soup = BeautifulSoup(resp.text,'html.parser')
-    l=[]
-    obj={}
     if "description" in target:
         nextTag = soup.find("script",{"id":"__NEXT_DATA__"})
         jsonData = json.loads(nextTag.text)
         Detail = jsonData['props']['pageProps']['initialData']['data']['product']['shortDescription']
         try:
-            obj["detail"] = Detail
+            return Detail
         except:
-            obj["detail"]=None
+            return None
     if "title" in target:
         try:
-            obj["name"] = soup.find("h1",{"itemprop":"name"}).text
+            return soup.find("h1",{"itemprop":"name"}).text
         except:
-            obj["name"]=None
-    l.append(obj)
-    return l[0]
+            return None
 
 #Ai Code Block#
 
