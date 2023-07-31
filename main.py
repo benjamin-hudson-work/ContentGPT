@@ -8,11 +8,13 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 from streamlit_chat import message
+from urllib.parse import urlencode
 MODEL = "gpt-3.5-turbo"
 EMODEL = "text-embedding-ada-002"
 
 openai.api_key = st.secrets['OPENAI_KEY'] 
 pApiKey = st.secrets['PINECONE_KEY'] 
+scrapeopsKey = st.secrets['SCRAPEOPS_KEY']
 ac="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
 headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"}
 
@@ -40,8 +42,13 @@ index = pinecone.Index('conversion')
 
 #Webscraping Block#
 
+def scrapeops_url(url):
+    payload = {'api_key': scrapeopsKey, 'url': url, 'country': 'us'}
+    proxy_url = 'https://proxy.scrapeops.io/v1/?' + urlencode(payload)
+    return proxy_url
+
 def scrape(url, target): #Inputs are url of Walmart store page and the type of data requested.
-    resp = requests.get(url, headers=headers) #TODO: ScrapeOps
+    resp = requests.get(scrapeops_url(url))#,headers=headers###) 
     if("Robot or human" in resp.text):
         return("False")
     soup = BeautifulSoup(resp.text,'html.parser')
