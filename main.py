@@ -95,18 +95,12 @@ def ask_AI(question):
 
 #UI Block#
 
-try:
-    st.session_state["url"]
-except NameError:
-    st.session_state["url"] = ""
-try:
-    st.session_state["goal"]
-except NameError:
-    st.session_state["goal"] = ""
-try:
-    st.session_state["start"]
-except NameError:
-    st.session_state["start"] = False
+if 'url' not in st.session_state:
+    st.session_state['url'] = ""
+if 'start' not in st.session_state:
+    st.session_state['start'] = False
+if 'goal' not in st.session_state:
+    st.session_state['goal'] = ""
     
 url = st.session_state["url"]
 goal = st.session_state["goal"]
