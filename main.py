@@ -17,17 +17,11 @@ pApiKey = st.secrets['PINECONE_KEY']
 scrapeopsKey = st.secrets['SCRAPEOPS_KEY']
 ac="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
 headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"}
-try:
-    st.session_state["url"]
-except NameError:
+if st.session_state["url"] not in dir():
     st.session_state["url"] = ""
-try:
-    st.session_state["goal"]
-except NameError:
+if st.session_state["goal"] not in dir():
     st.session_state["goal"] = ""
-try:
-    st.session_state["start"]
-except NameError:
+if st.session_state["start"] not in dir():
     st.session_state["start"] = False
 
 url = st.session_state["url"]
