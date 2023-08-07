@@ -95,6 +95,8 @@ def ask_AI(question):
 
 #UI Block#
 
+st.session_state["url"] = ""
+st.session_state["goal"] = ""
 url = st.session_state["url"]
 goal = st.session_state["goal"]
 if st.session_state["start"]: #Execute code here (TODO: Define function)
@@ -115,6 +117,7 @@ if st.session_state["start"]: #Execute code here (TODO: Define function)
             ask_AI(compiled_question)
         else:
             "error"
+    st.session_state["start"] = False
 
 repeat = st.button("Repeat")
 if repeat:
