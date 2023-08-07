@@ -95,8 +95,9 @@ def ask_AI(question):
 
 #UI Block#
 
-start = st.button("Start!")
-if start: #Execute code here (TODO: Define function)
+url = st.session_state["url"]
+goal = st.session_state["goal"]
+if st.session_state["start"]: #Execute code here (TODO: Define function)
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
         if goal == "Optimize Title":
@@ -125,7 +126,7 @@ if st.session_state['generated']:
         message(st.session_state["generated"][i],seed=50 , key=str(i)) #only works in deployment
         #message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user') #Display the question asked
 
-st.title("ContentGPT")
+st.title("ContentGPT")  
 #Sidebar content: link to Github
 st.sidebar.markdown("[![Click!](./app/static/git.png)](https://github.com/benjamin-hudson-work/ContentGPT)")
 st.sidebar.markdown("[![Click!](./app/static/HG.png)](https://harvestgroup.com/)")
@@ -135,10 +136,10 @@ st.sidebar.markdown("[![Click!](./app/static/Walmart.png)](https://www.walmart.c
 
 "First, input the URL for the item on Walmart's online store, then select which aspect you would like this to improve, then optionally select priority keywords."
  
-url = st.text_input("Item page url")
-goal = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
-keywords_input = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
+st.session_state["url"] = st.text_input("Item page url")
+st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
+st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 #Press button to send input
-start
+st.session_state["start"] = st.button("Start!")
 
