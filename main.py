@@ -102,7 +102,7 @@ def ask_AI(question):
     st.session_state.generated.append(reply)
     st.session_state.past.append(question)
 
-#UI Block#
+#Calls ask_AI function based on user input
 
 if st.session_state["start"]: #Execute code here (TODO: Define function)
     if url:
@@ -123,6 +123,8 @@ if st.session_state["start"]: #Execute code here (TODO: Define function)
         else:
             "error"
     st.session_state["start"] = False
+
+#UI Block#
 
 repeat = st.button("Repeat")
 if repeat:
@@ -146,7 +148,7 @@ st.sidebar.markdown("[![Click!](./app/static/Walmart.png)](https://www.walmart.c
  
 st.session_state["url"] = st.text_input("Item page url")
 st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
-st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
+st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)") #Sadge
 
 #Press button to send input
 st.session_state["start"] = st.button("Start!")
