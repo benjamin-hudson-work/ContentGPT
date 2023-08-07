@@ -130,7 +130,7 @@ st.session_state["keywords_input"] = st.text_input("Which keywords would you lik
 if st.button("Start!"): #Execute code here (TODO: Define function)
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
-        if url == st.session_state["url"]:
+        if url == st.session_state["url"]: #Check to see if url has changed since last time, to reuse scraped data
             name = st.session_state["scraped_title"]
             description = st.session_state["scraped_description"]
         else:
