@@ -17,15 +17,6 @@ pApiKey = st.secrets['PINECONE_KEY']
 scrapeopsKey = st.secrets['SCRAPEOPS_KEY']
 ac="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
 headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"}
-if st.session_state["url"] not in dir():
-    st.session_state["url"] = ""
-if st.session_state["goal"] not in dir():
-    st.session_state["goal"] = ""
-if st.session_state["start"] not in dir():
-    st.session_state["start"] = False
-
-url = st.session_state["url"]
-goal = st.session_state["goal"]
 
 #Pinecone Block#
 
@@ -102,8 +93,23 @@ def ask_AI(question):
     st.session_state.generated.append(reply)
     st.session_state.past.append(question)
 
-#Calls ask_AI function based on user input
+#UI Block#
 
+try:
+    st.session_state["url"]
+except NameError:
+    st.session_state["url"] = ""
+try:
+    st.session_state["goal"]
+except NameError:
+    st.session_state["goal"] = ""
+try:
+    st.session_state["start"]
+except NameError:
+    st.session_state["start"] = False
+    
+url = st.session_state["url"]
+goal = st.session_state["goal"]
 if st.session_state["start"]: #Execute code here (TODO: Define function)
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
@@ -123,8 +129,6 @@ if st.session_state["start"]: #Execute code here (TODO: Define function)
         else:
             "error"
     st.session_state["start"] = False
-
-#UI Block#
 
 repeat = st.button("Repeat")
 if repeat:
@@ -148,7 +152,7 @@ st.sidebar.markdown("[![Click!](./app/static/Walmart.png)](https://www.walmart.c
  
 st.session_state["url"] = st.text_input("Item page url")
 st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
-st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)") #Sadge
+st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 #Press button to send input
 st.session_state["start"] = st.button("Start!")
