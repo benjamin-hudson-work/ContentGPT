@@ -126,9 +126,8 @@ st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Featu
 st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 #Press button to send input
-st.session_state["start"] = st.button("Start!")
 
-if st.session_state["start"]: #Execute code here (TODO: Define function)
+if st.button("Start!"): #Execute code here (TODO: Define function)
     url = st.session_state["url"]
     goal = st.session_state["goal"]
     if url:
