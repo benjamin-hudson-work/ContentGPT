@@ -95,9 +95,19 @@ def ask_AI(question):
 
 #UI Block#
 
-st.session_state["url"] = ""
-st.session_state["goal"] = ""
-st.session_state["start"] = False
+try:
+    st.session_state["url"]
+except NameError:
+    st.session_state["url"] = ""
+try:
+    st.session_state["goal"]
+except NameError:
+    st.session_state["goal"] = ""
+try:
+    st.session_state["start"]
+except NameError:
+    st.session_state["start"] = False
+
 url = st.session_state["url"]
 goal = st.session_state["goal"]
 if st.session_state["start"]: #Execute code here (TODO: Define function)
