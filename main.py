@@ -97,6 +97,7 @@ def ask_AI(question):
 
 st.session_state["url"] = ""
 st.session_state["goal"] = ""
+st.session_state["start"] = False
 url = st.session_state["url"]
 goal = st.session_state["goal"]
 if st.session_state["start"]: #Execute code here (TODO: Define function)
