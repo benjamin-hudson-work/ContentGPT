@@ -109,11 +109,7 @@ repeat = st.button("Repeat")
 if repeat:
     ask_AI(st.session_state["past"][-1])
 
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        #st.session_state["generated"][i] #For testing
-        message(st.session_state["generated"][i],seed=50 , key=str(i)) #only works in deployment
-        #message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user') #Display the question asked
+begin = st.container()
 
 st.title("ContentGPT")  
 #Sidebar content: link to Github
@@ -130,7 +126,9 @@ st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Featu
 st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 #Press button to send input
-if st.button("Start!"): #Execute code here (TODO: Define function)
+st.session_state["start"] = st.button("Start!")
+
+if st.session_state["start"]: #Execute code here (TODO: Define function)
     url = st.session_state["url"]
     goal = st.session_state["goal"]
     if url:
@@ -150,3 +148,11 @@ if st.button("Start!"): #Execute code here (TODO: Define function)
             ask_AI(compiled_question)
         else:
             "error"
+    st.session_state["start"] = False
+
+with begin:
+    if st.session_state['generated']:
+        for i in range(len(st.session_state['generated'])-1, -1, -1):
+            #st.session_state["generated"][i] #For testing
+            message(st.session_state["generated"][i],seed=50 , key=str(i)) #only works in deployment
+            #message(st.session_state['past'][i], is_user=True,avatar_style="adventurer",seed=49, key=str(i) + '_user') #Display the question asked
