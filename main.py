@@ -102,13 +102,9 @@ def ask_AI(question):
     st.session_state.generated.append(reply)
     st.session_state.past.append(question)
 
-
-#UI Block#
-
-url = st.session_state["url"]
-goal = st.session_state["goal"]
-
-if st.session_state["start"]: #Execute code here (TODO: Define function)
+def start(): #calls ask_AI
+    url = st.session_state["url"]
+    goal = st.session_state["goal"]
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
         if goal == "Optimize Title":
@@ -127,6 +123,8 @@ if st.session_state["start"]: #Execute code here (TODO: Define function)
         else:
             "error"
     st.session_state["start"] = False
+
+#UI Block#
 
 repeat = st.button("Repeat")
 if repeat:
@@ -153,5 +151,5 @@ st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Featu
 st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 #Press button to send input
-st.session_state["start"] = st.button("Start!")
+st.button("Start!", on_click=start())
 
