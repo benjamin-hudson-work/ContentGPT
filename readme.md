@@ -7,3 +7,5 @@ This webapp is a project made to utilize ChatGPT to modify names and description
 The app is hosted on https://contentgptproject.streamlit.app/
 
 To use, first paste the url of the store page of the item you want to optimize the content of in the url input. Then, select "Optimize Title" to ask ChatGPT to improve the title of the product for conversion, select "Optimize Features" to ask to improve the description, or select "Optimize All Content" for both. Then, click start, and the response from ChatGPT will be displayed at the top of the page. You can click "Repeat" to ask the same question again.
+
+This project might eventually stop working when my free ScrapeOps credits run out. I might attempt to fix that when it happens.
