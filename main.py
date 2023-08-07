@@ -121,33 +121,37 @@ st.sidebar.markdown("[![Click!](./app/static/Walmart.png)](https://www.walmart.c
 
 "First, input the URL for the item on Walmart's online store, then select which aspect you would like this to improve, then optionally select priority keywords."
  
-st.session_state["url"] = st.text_input("Item page url")
-st.session_state["goal"] = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
+url = st.text_input("Item page url")
+goal = st.radio("Goal: ", ["Optimize Title", "Optimize Features", "Optimize All Content"])
 st.session_state["keywords_input"] = st.text_input("Which keywords would you like ChatGPT to emphasize? (Unfinished Feature)")
 
 #Press button to send input
 
 if st.button("Start!"): #Execute code here (TODO: Define function)
-    url = st.session_state["url"]
-    goal = st.session_state["goal"]
     if url:
         path = urlparse(url).path #Shorten link to ease AI's understanding
-        if goal == "Optimize Title":
+        if url == st.session_state["url"]:
+            name = st.session_state["scraped_title"]
+            description = st.session_state["scraped_description"]
+        else:
             name = scrape(url, "title")
+            description = scrape(url, "description")
+            st.session_state["scraped_title"] = name
+            st.session_state["scraped_description"] = description
+        if goal == "Optimize Title":
             compiled_question = "Tell me what the name of the product on this page is: " + name + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
             ask_AI(compiled_question)
         elif goal == "Optimize Features":
-            description = scrape(url, "description")
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
+            compiled_question = "Tell me what the name of the product on this page is: " + name + " Then, tell me how you would change this following product description to improve conversion?" + description
             ask_AI(compiled_question)
         elif goal == "Optimize All Content": 
-            name = scrape(url, "title")
-            description = scrape(url, "description")
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion? Then, tell me how you would change this following product description to improve conversion?" + description
+            compiled_question = "Tell me what the name of the product on this page is: " + name + " Then, tell me what would you change the name of the previous product to in order to improve conversion? Then, tell me how you would change this following product description to improve conversion?" + description
             ask_AI(compiled_question)
         else:
             "error"
     st.session_state["start"] = False
+    st.session_state["url"] = url
+    st.session_state["goal"] = goal
 
 with begin:
     if st.session_state['generated']:
