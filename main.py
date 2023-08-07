@@ -18,6 +18,22 @@ scrapeopsKey = st.secrets['SCRAPEOPS_KEY']
 ac="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
 headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"}
 
+#Store variables through refreshes
+if 'generated' not in st.session_state:
+    st.session_state['generated'] = []
+if 'past' not in st.session_state:
+    st.session_state['past'] = []
+if 'url' not in st.session_state:
+    st.session_state['url'] = ""
+if 'start' not in st.session_state:
+    st.session_state['start'] = False
+if 'goal' not in st.session_state:
+    st.session_state['goal'] = ""
+if 'scraped_title' not in st.session_state:
+    st.session_state['scraped_title'] = ""
+if 'scraped_description' not in st.session_state:
+    st.session_state['scraped_description'] = ""
+
 #Pinecone Block#
 
 res = openai.Embedding.create(
@@ -71,13 +87,6 @@ def scrape(url, target): #Inputs are url of Walmart store page and the type of d
 #Get the AI into character
 messages = [{"role": "system", "content": "You are an intelligent assistant. Your focus is on conversion marketing. Answer the question as truthfully as possible."} ]
 
-#Store conversation through refreshes
-if 'generated' not in st.session_state:
-    st.session_state['generated'] = []
-
-if 'past' not in st.session_state:
-    st.session_state['past'] = []
-
 #Function that asks ChatGPT question based on user input
 def ask_AI(question):
     messages.append( 
@@ -93,36 +102,8 @@ def ask_AI(question):
     st.session_state.generated.append(reply)
     st.session_state.past.append(question)
 
-#UI Block#
 
-if 'url' not in st.session_state:
-    st.session_state['url'] = ""
-if 'start' not in st.session_state:
-    st.session_state['start'] = False
-if 'goal' not in st.session_state:
-    st.session_state['goal'] = ""
-    
-url = st.session_state["url"]
-goal = st.session_state["goal"]
-if st.session_state["start"]: #Execute code here (TODO: Define function)
-    if url:
-        path = urlparse(url).path #Shorten link to ease AI's understanding
-        if goal == "Optimize Title":
-            name = scrape(url, "title")
-            compiled_question = "Tell me what the name of the product on this page is: " + name + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
-            ask_AI(compiled_question)
-        elif goal == "Optimize Features":
-            description = scrape(url, "description")
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
-            ask_AI(compiled_question)
-        elif goal == "Optimize All Content": 
-            name = scrape(url, "title")
-            description = scrape(url, "description")
-            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion? Then, tell me how you would change this following product description to improve conversion?" + description
-            ask_AI(compiled_question)
-        else:
-            "error"
-    st.session_state["start"] = False
+#UI Block#
 
 repeat = st.button("Repeat")
 if repeat:
@@ -151,3 +132,25 @@ st.session_state["keywords_input"] = st.text_input("Which keywords would you lik
 #Press button to send input
 st.session_state["start"] = st.button("Start!")
 
+url = st.session_state["url"]
+goal = st.session_state["goal"]
+
+if st.session_state["start"]: #Execute code here (TODO: Define function)
+    if url:
+        path = urlparse(url).path #Shorten link to ease AI's understanding
+        if goal == "Optimize Title":
+            name = scrape(url, "title")
+            compiled_question = "Tell me what the name of the product on this page is: " + name + " Then, tell me what would you change the name of the previous product to in order to improve conversion?"
+            ask_AI(compiled_question)
+        elif goal == "Optimize Features":
+            description = scrape(url, "description")
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me how you would change this following product description to improve conversion?" + description
+            ask_AI(compiled_question)
+        elif goal == "Optimize All Content": 
+            name = scrape(url, "title")
+            description = scrape(url, "description")
+            compiled_question = "Tell me what the name of the product on this page is: " + path + " Then, tell me what would you change the name of the previous product to in order to improve conversion? Then, tell me how you would change this following product description to improve conversion?" + description
+            ask_AI(compiled_question)
+        else:
+            "error"
+    st.session_state["start"] = False
